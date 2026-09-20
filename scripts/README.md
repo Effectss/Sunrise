@@ -1,7 +1,8 @@
 # Authored mission controllers
 
 Controllers in this directory are copied beside the built DLL and override the generated no-op
-controller for the matching activity stem. They reference only SDK data extracted at runtime.
+controller for the matching activity stem. At runtime they live under `Sunrise/scripts` beside the
+DLL. They reference only SDK data extracted at runtime.
 
 `mission_towerfall/mission_towerfall.lua` targets Homecoming activity `0x62D85FB3` and scenario
 `0x80B500BC`. It advances through the Bazaar, Hangar, Plaza, damaged Tower, Cabal deck, ship and
