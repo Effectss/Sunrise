@@ -2222,7 +2222,7 @@
   <ItemGroup>
     <Content Include="..\scripts\mission_towerfall\mission_towerfall.lua">
       <Link>scripts\mission_towerfall\mission_towerfall.lua</Link>
-      <TargetPath>scripts\mission_towerfall\mission_towerfall.lua</TargetPath>
+      <TargetPath>Sunrise\scripts\mission_towerfall\mission_towerfall.lua</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
