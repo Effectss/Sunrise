@@ -41,7 +41,7 @@ add_library(steam_api64 SHARED
 add_custom_command(TARGET steam_api64 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
             "${CMAKE_CURRENT_SOURCE_DIR}/scripts"
-            "$<TARGET_FILE_DIR:steam_api64>/scripts"
+            "$<TARGET_FILE_DIR:steam_api64>/Sunrise/scripts"
     COMMENT "Copying authored mission controllers"
 )
 
