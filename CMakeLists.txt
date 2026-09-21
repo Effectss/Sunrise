@@ -137,3 +137,14 @@ set_target_properties(steam_api64 PROPERTIES
 set_source_files_properties(Sunrise/vendor/sqlite/sqlite3.c PROPERTIES
     COMPILE_DEFINITIONS "SQLITE_OMIT_LOAD_EXTENSION;SQLITE_THREADSAFE=1"
 )
+
+
+# Mission controllers are runtime data, not compiled sources. Keep them beside steam_api64.dll
+# because the mission runtime resolves <artifact>/scripts/<activity>/<activity>.lua.
+set(SUNRISE_MISSION_SCRIPTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Sunrise/scripts")
+add_custom_command(TARGET steam_api64 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${SUNRISE_MISSION_SCRIPTS_DIR}"
+            "$<TARGET_FILE_DIR:steam_api64>/scripts"
+    COMMENT "Copying Sunrise mission scripts"
+)
