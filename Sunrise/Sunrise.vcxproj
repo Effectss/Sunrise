@@ -2219,5 +2219,12 @@
     <ClInclude Include="src\server\ui\activity_host\activity_host_sdk_actor_sequences.h" />
     <ClInclude Include="src\state\build_data\items\quest_initialization.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\scripts\mission_towerfall\mission_towerfall.lua">
+      <Link>scripts\mission_towerfall\mission_towerfall.lua</Link>
+      <TargetPath>Sunrise\scripts\mission_towerfall\mission_towerfall.lua</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
