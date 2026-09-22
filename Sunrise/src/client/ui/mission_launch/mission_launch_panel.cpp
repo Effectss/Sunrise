@@ -75,6 +75,28 @@ void reset_library() noexcept {
     g_type.fill(0);
     navigate(0);
 }
+
+/** Finds the installed Homecoming/Towerfall activity without baking build-specific hashes. */
+[[nodiscard]] std::uint16_t homecoming_activity(std::span<const Activity> rows) noexcept {
+    std::uint16_t best = 0xFFFF;
+    for (const auto& row : rows) {
+        if (!g_available[row.index]) {
+            continue;
+        }
+        const auto display = title(row);
+        const bool homecoming = contains(display.data(), "homecoming")
+                                || contains(row.name(), "towerfall")
+                                || contains(row.package.data(), "towerfall");
+        if (!homecoming) {
+            continue;
+        }
+        if (best == 0xFFFF
+            || representative_score(row, true) > representative_score(rows[best], true)) {
+            best = row.index;
+        }
+    }
+    return best;
+}
 /** Draws navigation back to the current content group or the complete library. */
 void breadcrumbs() noexcept {
     if (ImGui::Button("Content library")) {
@@ -298,6 +320,28 @@ void draw() noexcept {
         if (g_custom) {
             show_custom();
             return;
+        }
+        // Homecoming is a first-class quick launch. The installed catalog supplies the exact
+        // activity/scenario for this game build; the mission runtime then resolves
+        // scripts/mission_towerfall/mission_towerfall.lua automatically.
+        if (g_selected < 0 && g_content == 0 && !g_globalSearch[0]) {
+            const auto homecoming = homecoming_activity(rows);
+            if (homecoming != 0xFFFF) {
+                ImGui::PushID("homecoming_quick_launch");
+                const auto status = client::activity::mission_launch::snapshot();
+                const bool blocked = status.busy
+                                     || state::activity::forced::override_active();
+                ImGui::BeginDisabled(blocked);
+                if (ImGui::Button("Launch Homecoming", {-1.0F, 43.0F * card_scale()})) {
+                    manual::g_enabled = false;
+                    (void)client::activity::mission_launch::request(homecoming);
+                }
+                ImGui::EndDisabled();
+                ImGui::TextDisabled(
+                    "Uses the installed Homecoming route and mission_towerfall script automatically.");
+                ImGui::Spacing();
+                ImGui::PopID();
+            }
         }
         if (g_selected >= 0 && static_cast<std::size_t>(g_selected) < rows.size()) {
             show_detail(rows[static_cast<std::size_t>(g_selected)]);

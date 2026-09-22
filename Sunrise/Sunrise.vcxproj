@@ -2219,5 +2219,19 @@
     <ClInclude Include="src\server\ui\activity_host\activity_host_sdk_actor_sequences.h" />
     <ClInclude Include="src\state\build_data\items\quest_initialization.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="scripts\lib\campaign.lua" />
+    <None Include="scripts\lib\flow.lua" />
+    <None Include="scripts\lib\mission_lib.lua" />
+    <None Include="scripts\mission_towerfall\mission_towerfall.lua" />
+  </ItemGroup>
+  <Target Name="CopyMissionScripts" AfterTargets="Build">
+    <MakeDir Directories="$(TargetDir)scripts" />
+    <ItemGroup>
+      <MissionScriptFiles Include="$(ProjectDir)scripts\**\*.lua" />
+    </ItemGroup>
+    <Copy SourceFiles="@(MissionScriptFiles)"
+          DestinationFiles="@(MissionScriptFiles->'$(TargetDir)scripts\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
